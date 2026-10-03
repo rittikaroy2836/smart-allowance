@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Coins, Wallet, TrendingUp, Bell, Plus,
@@ -11,6 +11,7 @@ import {
   PieChart, Pie, Cell,
 } from "recharts";
 
+import ParentWelcome from "@/components/ParentWelcome";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import StatCard from "@/components/StatCard";
@@ -72,6 +73,7 @@ export default function ParentDashboard() {
   const { account, isDemoMode } = useWallet();
   const { registerChild, loading: txLoading } = useKidSafe();
 
+  const [showWelcome, setShowWelcome] = useState(true);
   const [childAddress,     setChildAddress]     = useState(isDemoMode ? MOCK_CHILD_ADDRESS : "");
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [newChildInput,    setNewChildInput]    = useState("");
@@ -98,6 +100,12 @@ export default function ParentDashboard() {
     });
   }
 
+  useEffect(() => {
+    if (!showWelcome) document.getElementById("parent-dashboard-heading")?.focus({ preventScroll: true });
+  }, [showWelcome]);
+
+  if (showWelcome) return <ParentWelcome onEnter={() => setShowWelcome(false)} demoMode={demoMode ?? isDemoMode} />;
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar onMenuToggle={() => setSidebarOpen((o) => !o)} sidebarOpen={sidebarOpen} />
@@ -110,12 +118,13 @@ export default function ParentDashboard() {
           {/* ── Page header ──────────────────────────────────── */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Parent Dashboard</h1>
+              <h1 id="parent-dashboard-heading" tabIndex={-1} className="text-2xl font-bold text-gray-900">Parent Dashboard</h1>
               <p className="text-sm text-gray-400 mt-0.5">
                 {demoMode ? "Demo Mode — data is simulated." : "Manage your child's allowance and spending."}
               </p>
             </div>
             <div className="flex gap-2 flex-wrap">
+              <button type="button" onClick={() => setShowWelcome(true)} className="btn-ghost">Replay intro</button>
               <button onClick={refetch} className="btn-ghost" disabled={loading} aria-label="Refresh">
                 <RefreshCw size={15} className={loading ? "animate-spin" : ""} /> Refresh
               </button>
@@ -412,9 +421,9 @@ function buildChartData(transactions) {
 
 function buildBreakdown(transactions) {
   const COLORS = {
-    "School Store":   "#10b981",
-    "Bookshop":       "#3b82f6",
-    "Lunch Canteen":  "#ec4899",
+    "Pixel Quest":   "#10b981",
+    "Creator Lab":       "#3b82f6",
+    "Orbit Academy":  "#ec4899",
     "Direct Payment": "#8b5cf6",
     "Other":          "#f59e0b",
   };

@@ -32,12 +32,12 @@ const ROLES = [
     icon: <Baby size={36} />,
     iconBg: "from-cyan-400 to-blue-500",
     title: "Sign in as Child",
-    subtitle: "View your allowance & make payments",
+    subtitle: "Explore Web3 with parent-approved payments",
     features: [
       "See your available balance",
       "Track daily spending with progress bar",
-      "Send payments to approved stores",
-      "Request money from your parent",
+      "Pay parent-approved dApp addresses",
+      "Request approval for dApp purchases",
     ],
     cta: "Continue as Child",
     ctaCls: "bg-cyan-500 hover:bg-cyan-400 text-white",
@@ -168,7 +168,7 @@ export default function LandingPage() {
             {[
               { n: "01", t: "Parent signs in",    d: "Choose Parent role to open the control panel." },
               { n: "02", t: "Set allowance",       d: "Deposit mUSDC and set a daily spending cap." },
-              { n: "03", t: "Whitelist stores",    d: "Add wallet addresses the child can pay." },
+              { n: "03", t: "Approve dApps",    d: "Approve dApp payment addresses your child can use." },
               { n: "04", t: "Child spends safely", d: "Every payment is checked by the contract." },
             ].map(({ n, t, d }) => (
               <div key={n}>
